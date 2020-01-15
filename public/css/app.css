@@ -1,0 +1,150 @@
+/*
+ *这是单独为hello mui准备的个性化css，可以覆盖标准mui的css定义；
+ * 在实际项目开发时，建议为App单独写一个css文件，从而实现项目的自定义皮肤功能；
+ * 
+ * */
+html{
+
+	max-width: 450px;
+	margin: auto;
+	background: #e8e8e8;
+}
+
+.app-header{
+	background: #ffffff !important;
+	max-width: 450px;
+	margin: 0 auto;
+	box-shadow:none;
+}
+.mui-content{
+
+	max-width: 450px;
+	margin: 0 auto;
+	left: unset;
+}
+.mui-scroll{
+
+	max-width: 450px;
+}
+.app-header .mui-icon{
+	color: #333333 !important;
+}
+.app-bar-tab{
+	background: #ffffff !important;
+	-webkit-box-shadow:none;
+	box-shadow:none;
+	max-width: 450px;
+	margin: auto;
+}
+.alipay{
+	color: #0398e0 !important;
+}
+.weixin{
+	color: #00c901 !important;
+}
+.text-amber {
+	color: #ffc107 !important;
+}
+/**
+登录注册页面
+ */
+.login-box{background: #ffffff;padding:0 1rem;}
+.login-box .mui-input-row{height: 60px !important;}
+.login-box .mui-input-row:after{left: 0 !important;}
+.login-box:after{background: none !important;}
+.login-box .mui-input-row:after{background: #e4e4e4;}
+.login-input{height: 60px !important;font-size: 1rem;}
+.login-btn{margin-top: 1.5rem;padding: 0.6rem 0;font-size: 1.0rem;}
+
+[v-cloak]{ display: none; }
+
+*{
+	-webkit-user-select: text;
+	user-select: text;
+}
+
+.comment-box{
+	background: #ffffff;
+	margin: 0.5rem;
+	padding: 0.5rem;
+	border-radius: 0.4rem;
+}
+.comment-box .comment-list{
+
+}
+.comment-box .comment-list .item{
+	overflow: hidden;
+	position: relative;
+	margin-bottom: 0.7rem;
+	border-bottom: 1px dashed #ececec;
+}
+.comment-box .comment-list .item .user-img{
+	height: 1.8rem;
+	width:1.8rem;
+	border-radius: 50%;
+	background: #6d78a8;
+	color: #ffffff;
+	text-align: center;
+	line-height: 1.8rem;
+	font-size: 0.7rem;
+	position: absolute;
+	top: 0;
+}
+.comment-box .comment-list .item .buy-user-img{
+	background: #ea5c00;
+}
+.comment-box .comment-list .item p{
+	padding-left: 2.2rem;
+	line-height: 1.9rem;
+	margin: 0;
+	color: #333333;
+	width: 100%;
+}
+.comment-box .comment-list .item .time{
+	text-align: right;
+	font-size: 0.7rem;
+	color: #8a8a8a;
+}
+.comment-box .comment-input{
+	margin-top: 1rem !important;
+}
+.comment-box .send-btn{
+	width: 100%;
+	font-size: 0.8rem;
+}
+
+.comment-box textarea::-webkit-input-placeholder { /* WebKit browsers */
+	font-size:0.9rem;
+}
+.comment-box textarea:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+	font-size:0.9rem;
+}
+.comment-box textarea::-moz-placeholder { /* Mozilla Firefox 19+ */
+	font-size:0.9rem;
+}
+.comment-box textarea:-ms-input-placeholder { /* Internet Explorer 10+ */
+	font-size:0.9rem;
+}
+.go-pc{
+	font-size:16px;
+	color:#000;
+	line-height:43px;
+}
+.menu-list li{
+	width:33.3333%;
+	float:left;
+	text-align: center;
+	margin-bottom:10px;
+	position: relative;
+}
+.menu-list li a img{
+	width:35%;
+}
+.menu-list li a p{
+	margin:0;
+	color:#494949
+
+}
+/**
+我的页面
+ */
