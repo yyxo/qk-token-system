@@ -162,11 +162,6 @@ class BoxesService
                             $item->save();
                         }
 
-                        $block_db = new Block();
-                        $block_db->height = $block_height;
-                        $block_db->hash = $hash;
-                        $block_db->save();
-
                         Settings::where('key', 'box_block_height')->update(['value' => $block_height]);
                         DB::commit();
                     }
