@@ -117,7 +117,7 @@ class BoxesService
                 if ($block['result']) {
 
 
-                    $block_height = bcadd(base_convert($block['result']['number'], 16, 10), 1, 0);
+                    $block_height = base_convert($block['result']['number'], 16, 10);
                     $block_time = base_convert($block['result']['timestamp'],16,10);
                     //太新的区块，不处理,至少要求60秒钟以上
                     if(time() - $block_time < 60)
