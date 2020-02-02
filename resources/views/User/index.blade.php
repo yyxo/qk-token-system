@@ -175,6 +175,12 @@
                     <span class="mui-pull-left">资产账户</span>
                 </a>
             </div>
+            <div class="item">
+                <a href="/box">
+                    <img class="mui-pull-left" src="/images/my-assets-ico.png?v=1" alt="">
+                    <span class="mui-pull-left">开箱子</span>
+                </a>
+            </div>
         </div>
         <div class="logout-box">
             <a href="/user/logout" class="mui-btn mui-btn-outlined mui-btn-block">退出</a>

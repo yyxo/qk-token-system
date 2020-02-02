@@ -14,12 +14,15 @@ class Controller extends BaseController{
         DispatchesJobs,
         ValidatesRequests;
 
+    protected $user; //用户信息
 
     public function __construct(){
         
         $this->middleware(function($request, $next){
             
             $user = session('user');
+
+            $this->user = $user;
 
             if(!empty($user['id'])){
                 $this->uid = $user['id'];

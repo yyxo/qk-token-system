@@ -164,16 +164,16 @@ class ManageAssetsController extends Controller{
             }
         }else{
             //CCT
-            $logs = BalanceLog::select(['amount', 'created_at', 'id', 'operate_type', 'remark'])
+            $logs = BalancesLogs::select(['amount', 'created_at', 'id', 'operate_type', 'remark'])
                 ->where("uid", $this->uid)
                 ->orderBy('id', 'desc')
                 ->offset($offset)
                 ->limit($pageSize)
                 ->get();
-            $type_label = BalanceLog::$operate_type_label;
+            $type_label = BalancesLogs::$operate_type_label;
 
             if($lang == 'en'){
-                $type_label = BalanceLog::$operate_type_label_en;
+                $type_label = BalancesLogs::$operate_type_label_en;
             }
         }
 
