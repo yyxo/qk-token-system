@@ -28,6 +28,16 @@ class BalancesService{
         return self::getBalanceData($uid, $assets_id)->amount ?? null;
     }
 
+    /**
+     * 获取指定资产余额
+     * @param int $uid
+     * @param string $assets_name
+     * @return float|mixed|null
+     */
+    public static function getBalanceByName(int $uid, string $assets_name){
+        return self::getBalanceDataByName($uid, $assets_name)->amount ?? null;
+    }
+
 
     /**
      * 获取余额orm
@@ -48,6 +58,35 @@ class BalancesService{
                 $data = new Balances();
                 $data->uid = $uid;
                 $data->assets_id = $assets_id;
+                $data->name = $assets->assets_name;
+                $data->amount = 0;
+                $data->freeze_amount = 0;
+                $data->save();
+            }
+        }
+        return $data;
+    }
+
+
+    /**
+     * 获取余额orm
+     * @param int $uid
+     * @param string $assets_name
+     * @return Balances|\Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|null|object
+     */
+    public static function getBalanceDataByName(int $uid, string $assets_name){
+        $data = Balances::where('uid', $uid)
+            ->where('name', $assets_name)
+            ->lockForUpdate()
+            ->first();
+
+        if(!$data){
+            //获取资产类型
+            $assets = Assets::where('assets_name',$assets_name)->first();
+            if($assets){
+                $data = new Balances();
+                $data->uid = $uid;
+                $data->assets_id = $assets->id;
                 $data->name = $assets->assets_name;
                 $data->amount = 0;
                 $data->freeze_amount = 0;

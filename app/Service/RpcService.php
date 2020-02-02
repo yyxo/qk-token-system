@@ -49,11 +49,14 @@ class RpcService{
      */
     public function lastBlockHeightNumber(){
         $params = array(
-            ['latest', true]
+            ['latest',true]
         );
-        $blockHeight = $this->rpc('eth_getBlockByNumber', $params);
+        $blockHeight = $this->rpc('eth_getBlockByNumber',$params);
 
-        return $blockHeight[0]['result']['number'];
+        $timestamp = base_convert($blockHeight[0]['result']['timestamp'],16,10);
+        if($timestamp < time() -20)
+            return 0;
+        return base_convert($blockHeight[0]['result']['number'],16,10);
     }
 
 
@@ -92,7 +95,7 @@ class RpcService{
      * @return mixed
      */
     public function curlPost($data){
-        $url = env('WITHDRAW_RPC_HOST');
+        $url = env('RPC_HOST');
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);

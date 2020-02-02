@@ -32,4 +32,13 @@ Route::group(['middleware' => ['auth.user']], function () {
     Route::post('/manage-assets/addre-my',       'ManageAssetsController@getAddress');//我的地址
     Route::post('/manage-assets/addre-del',      'ManageAssetsController@delAddress');//地址解绑
     Route::post('/manage-assets/withdraw', 'ManageAssetsController@tokenWithdraw');//提现
+
+    //开箱子
+    Route::group(['prefix' => 'box'], function () {
+
+        Route::get('/', 'BoxController@index');
+        Route::get('userinfo', 'BoxController@userinfo');
+        Route::post('open', 'BoxController@open');
+        Route::get('boxes', 'BoxController@boxes');
+    });
 });
