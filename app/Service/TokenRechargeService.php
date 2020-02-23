@@ -4,8 +4,7 @@ namespace App\Service;
 
 use App\Model\Address;
 use App\Model\Assets;
-use App\Model\Balance;
-use App\Model\BalanceLog;
+use App\Model\Balances;
 use App\Model\Transactions;
 use App\Model\BalancesLogs;
 use App\Model\Users;
@@ -60,17 +59,12 @@ class TokenRechargeService{
             echo "金额小于等于0\n";
             return;
         }
-        if(BalanceLog::where('tx_hash', $log->hash)->count()){
+        if(BalancesLogs::where('tx_hash', $log->hash)->count()){
             //hash是否存在于余额记录，则不执行操作
             echo "存在于余额记录\n";
             return;
         }
 
-        if(BalancesLogs::where('tx_hash', $log->hash)->count()){
-            //hash是否存在于usdt记录，则不执行操作
-            echo "存在于usdt记录\n";
-            return;
-        }
 
         //获取token类型
         $assets = Assets::find($log->token_id);
@@ -78,22 +72,8 @@ class TokenRechargeService{
         \DB::beginTransaction();
         try{
 
-            if(Assets::isCCT($log->assets_type)){
-                $balance = Balance::where('uid', $address->uid)->lockForUpdate()->first();
+            $data_id = BalancesService::balancesChange($address->uid, $assets->id, $assets->assets_name, $log->token_tx_amount, 'recharge', '用户充值', $log->id, $log->hash, $log->id);
 
-                if(is_null($balance)){
-                    $balance = new Balance;
-
-                    $balance->uid = $address->uid;
-                    $balance->amount = 0;
-                    $balance->freeze_amount = 0;
-                }
-
-                //先增加原始数量
-                $data_id = (new BalanceService())->change($balance, $log->token_tx_amount, 'recharge', '钱包转入', $log->id, $log->hash);
-            }else{
-                $data_id = BalancesService::balancesChange($address->uid, $assets->id, $assets->assets_name, $log->token_tx_amount, 'recharge', '用户充值', $log->id, $log->hash, $log->id);
-            }
             //修改交易记录信息
             $transactionLog = Transactions::lockForUpdate()->find($log->id);
             $transactionLog->status = 2;
