@@ -13,6 +13,7 @@ use App\Exceptions\BusinessException;
 use App\Model\Assets;
 use App\Model\Balances;
 use App\Model\BalancesLogs;
+use App\Model\FreezeLog;
 
 
 class BalancesService{
@@ -137,8 +138,10 @@ class BalancesService{
      * 改变余额不写日志
      * @param int $uid
      * @param int $assets_id
-     * @return float|mixed
-     * @throws exception
+     * @param float $amount
+     * @param null $trade_type
+     * @return array
+     * @throws BusinessException
      */
     public static function changeWithoutLog(int $uid, int $assets_id, float $amount, $trade_type = null){
 
@@ -158,5 +161,43 @@ class BalancesService{
         $balance->amount = $amount_after_change;
         $balance->save();
         return ['amount_before_change' => $amount_before_change, 'amount_after_change' => $amount_after_change];
+    }
+
+    /**冻结余额操作
+     * @param int $uid
+     * @param int $assets_id
+     * @param $amount
+     * @param string $operate_type
+     * @param string $remark
+     * @param int $goods_id
+     * @param int $order_id
+     * @throws Exception
+     */
+    public static function freezeChange(int $uid, int $assets_id,$amount, string $operate_type, string $remark, int $goods_id, int $order_id = 0){
+        //当前余额
+        $freeze_assets = self::getBalanceData($uid, $assets_id);
+        $freeze_amount_before_change = $freeze_assets->freeze_amount;
+        $freeze_amount_after_change = bcadd($freeze_amount_before_change, $amount, 18);
+        //如果是扣除操作，结果小于0则报错
+        if (bccomp($amount, 0, 18) < 0) {
+            if (bccomp($freeze_amount_after_change, 0, 18) < 0) {
+                throw new Exception('冻结余额异常', 175);
+            }
+        }
+        $freeze_assets->freeze_amount = $freeze_amount_after_change;
+        $freeze_assets->save();
+        //写入冻结日志
+        $freeze = new FreezeLog();
+        $freeze->uid = $uid;
+        $freeze->goods_id = $goods_id;
+        $freeze->order_id = $order_id;
+        $freeze->amount = $amount;
+        $freeze->amount_before_change = $freeze_amount_before_change;
+        $freeze->operate_type = $operate_type;
+        $freeze->ip = \Request::getClientIp();
+        $freeze->user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? mb_substr($_SERVER['HTTP_USER_AGENT'], 0, 255, 'utf-8') : null;
+        $freeze->assets_type_id = $assets_id;
+        $freeze->remark = $remark;
+        $freeze->save();
     }
 }

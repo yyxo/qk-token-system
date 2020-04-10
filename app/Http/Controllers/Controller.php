@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Model\Users;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -17,9 +18,12 @@ class Controller extends BaseController{
     protected $user; //用户信息
 
     public function __construct(){
-        
+
         $this->middleware(function($request, $next){
-            
+
+            /**
+             * @var Users $user
+             */
             $user = session('user');
 
             $this->user = $user;
@@ -27,7 +31,7 @@ class Controller extends BaseController{
             if(!empty($user['id'])){
                 $this->uid = $user['id'];
             }
-            
+
             return $next($request);
         });
     }
